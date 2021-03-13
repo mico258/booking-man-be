@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package user;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service user {
+     rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {
+        option (google.api.http) = {
+            post: "/booking_man/user/register",
+            body: "*"
+        };
+        
+    }
+
+}
+
+
+message RegisterUser {
+  string query = 1;
+  int32 pageNumber = 2;
+   
+}
+
+message RegisterUserResponse {
+  string query = 1;
+  int32 pageNumber = 2;
+} 
