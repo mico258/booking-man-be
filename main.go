@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	log.Println("XXXXX")
+	log.Printf("Test format message for logger : %d", 43)
+
 }

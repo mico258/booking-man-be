@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"bytes"
 	"io"
 	"os"
 
@@ -164,4 +165,35 @@ func New() Logger {
 		Level:     GetLogLevel(),
 	}
 	return &logger{base}
+}
+
+func GetLogLevel() logrus.Level {
+	switch logLevel := os.Getenv("LOG_LEVEL"); logLevel {
+	case "DEBUG":
+		return logrus.DebugLevel
+	case "INFO":
+		return logrus.InfoLevel
+	case "WARN":
+		return logrus.WarnLevel
+	case "ERROR":
+		return logrus.ErrorLevel
+	default:
+		return logrus.InfoLevel
+	}
+}
+
+type PrefixTextFormatter struct {
+	base   *logrus.TextFormatter
+	prefix string
+}
+
+func (f *PrefixTextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	msg, err := f.base.Format(entry)
+	if err != nil {
+		return msg, err
+	}
+
+	msg = bytes.Join([][]byte{[]byte(f.prefix), msg}, nil)
+
+	return msg, err
 }
