@@ -1,10 +1,10 @@
 package main
 
 import (
-	"log"
+	"github.com/booking-man-be/lib/logger"
 )
 
 func main() {
-	log.Printf("Test format message for logger : %d", 43)
+	logger.Infof("Test format message for logger : %d", 43)
 
 }
