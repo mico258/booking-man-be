@@ -8,26 +8,20 @@ import (
 )
 
 const (
-	HeaderContentType         = "Content-Type"
-	HeaderAccept              = "Accept"
-	HeaderAuthorization       = "authorization"
-	HeaderInternalAPIPassword = "internalapipassword"
-	HeaderUserCode            = "usercode"
-	HeaderRole                = "role"
-	HeaderRequestID           = "requestid"
-	HeaderCoutry              = "country"
-	HeaderDeviceID            = "deviceid"
-	HeaderClientID            = "clientid"
-	HeaderOAuthClientID       = "oauthclientid" // will be used in login endpoint header
-	HeaderAppName             = "appname"
-	HeaderAppVersion          = "appversion"
-	HeaderAppVersionCode      = "appversioncode"
-	HeaderManufacture         = "manufacture"
-	HeaderModel               = "model"
-	HeaderPlatform            = "platform"
-	HeaderPlatformVersion     = "platformversion"
-	HeaderSDKVersion          = "sdkversion"
-	HeaderUserAgent           = "user-agent"
+	DefaultGRPCPort      = "9090"
+	DefaultRESTPort      = "8080"
+	DefaultNetwork       = "tcp"
+	DefaultGRPHost       = "localhost"
+	formURLEncodedHeader = "application/x-www-form-urlencoded"
+)
+
+const (
+	HeaderContentType   = "Content-Type"
+	HeaderAccept        = "Accept"
+	HeaderAuthorization = "authorization"
+	HeaderRequestID     = "requestid"
+	HeaderDeviceID      = "deviceid"
+	HeaderClientID      = "clientid"
 )
 
 const defaultMessageSize = 1024 * 1024 * 20
