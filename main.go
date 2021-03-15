@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	logClient := logger.New()
-	logClient.Infof("Test format message for logger : %d", 43)
+
+	logger.Infof("Test format message for logger : %d", 43)
 
 }

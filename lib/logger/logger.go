@@ -49,132 +49,6 @@ func init() {
 	logrus.SetLevel(GetLogLevel())
 }
 
-type logger struct {
-	base *logrus.Logger
-}
-
-func (l *logger) WithFields(fields Fields) *logrus.Entry {
-	return l.base.WithFields(logrus.Fields(fields))
-}
-
-func (l *logger) WithField(key string, val interface{}) *logrus.Entry {
-	return l.base.WithField(key, val)
-}
-
-func (l *logger) WithError(err error) *logrus.Entry {
-	return l.base.WithError(err)
-}
-
-func (l *logger) Debugf(format string, args ...interface{}) {
-	l.base.Debugf(format, args...)
-}
-
-func (l *logger) Infof(format string, args ...interface{}) {
-	l.base.Infof(format, args...)
-}
-
-func (l *logger) Printf(format string, args ...interface{}) {
-	l.base.Printf(format, args...)
-}
-
-func (l *logger) Warnf(format string, args ...interface{}) {
-	l.base.Warnf(format, args...)
-}
-
-func (l *logger) Warningf(format string, args ...interface{}) {
-	l.base.Warningf(format, args...)
-}
-
-func (l *logger) Errorf(format string, args ...interface{}) {
-	l.base.Errorf(format, args...)
-}
-
-func (l *logger) Fatalf(format string, args ...interface{}) {
-	l.base.Fatalf(format, args...)
-}
-
-func (l *logger) Panicf(format string, args ...interface{}) {
-	l.base.Panicf(format, args...)
-}
-
-func (l *logger) Debug(args ...interface{}) {
-	l.base.Debug(args...)
-}
-
-func (l *logger) Info(args ...interface{}) {
-	l.base.Info(args...)
-}
-
-func (l *logger) Print(args ...interface{}) {
-	l.base.Print(args...)
-}
-
-func (l *logger) Warn(args ...interface{}) {
-	l.base.Warn(args...)
-}
-
-func (l *logger) Warning(args ...interface{}) {
-	l.base.Warning(args...)
-}
-
-func (l *logger) Error(args ...interface{}) {
-	l.base.Error(args...)
-}
-
-func (l *logger) Fatal(args ...interface{}) {
-	l.base.Fatal(args...)
-}
-
-func (l *logger) Panic(args ...interface{}) {
-	l.base.Panic(args...)
-}
-
-func (l *logger) Debugln(args ...interface{}) {
-	l.base.Debugln(args...)
-}
-
-func (l *logger) Infoln(args ...interface{}) {
-	l.base.Infoln(args...)
-}
-
-func (l *logger) Println(args ...interface{}) {
-	l.base.Println(args...)
-}
-
-func (l *logger) Warnln(args ...interface{}) {
-	l.base.Warnln(args...)
-}
-
-func (l *logger) Warningln(args ...interface{}) {
-	l.base.Warningln(args...)
-}
-
-func (l *logger) Errorln(args ...interface{}) {
-	l.base.Errorln(args...)
-}
-
-func (l *logger) Fatalln(args ...interface{}) {
-	l.base.Fatalln(args...)
-}
-
-func (l *logger) Panicln(args ...interface{}) {
-	l.base.Panicln(args...)
-}
-
-func (l *logger) SetOut(out io.Writer) {
-	l.base.Out = out
-}
-
-func New() Logger {
-	textFormatter := &logrus.TextFormatter{}
-	base := &logrus.Logger{
-		Formatter: &PrefixTextFormatter{textFormatter, prefix},
-		Out:       os.Stdout,
-		Level:     GetLogLevel(),
-	}
-	return &logger{base}
-}
-
 func GetLogLevel() logrus.Level {
 	switch logLevel := os.Getenv("LOG_LEVEL"); logLevel {
 	case "DEBUG":
@@ -204,4 +78,96 @@ func (f *PrefixTextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	msg = bytes.Join([][]byte{[]byte(f.prefix), msg}, nil)
 
 	return msg, err
+}
+
+func Infof(format string, args ...interface{}) {
+	logrus.Infof(format, args...)
+}
+
+func Printf(format string, args ...interface{}) {
+	logrus.Printf(format, args...)
+}
+
+func Warnf(format string, args ...interface{}) {
+	logrus.Warnf(format, args...)
+}
+
+func Warningf(format string, args ...interface{}) {
+	logrus.Warningf(format, args...)
+}
+
+func Errorf(format string, args ...interface{}) {
+	logrus.Errorf(format, args...)
+}
+
+func Fatalf(format string, args ...interface{}) {
+	logrus.Fatalf(format, args...)
+}
+
+func Panicf(format string, args ...interface{}) {
+	logrus.Panicf(format, args...)
+}
+
+func Debug(args ...interface{}) {
+	logrus.Debug(args...)
+}
+
+func Info(args ...interface{}) {
+	logrus.Info(args...)
+}
+
+func Print(args ...interface{}) {
+	logrus.Print(args...)
+}
+
+func Warn(args ...interface{}) {
+	logrus.Warn(args...)
+}
+
+func Warning(args ...interface{}) {
+	logrus.Warning(args...)
+}
+
+func Error(args ...interface{}) {
+	logrus.Error(args...)
+}
+
+func Fatal(args ...interface{}) {
+	logrus.Fatal(args...)
+}
+
+func Panic(args ...interface{}) {
+	logrus.Panic(args...)
+}
+
+func Debugln(args ...interface{}) {
+	logrus.Debugln(args...)
+}
+
+func Infoln(args ...interface{}) {
+	logrus.Infoln(args...)
+}
+
+func Println(args ...interface{}) {
+	logrus.Println(args...)
+}
+
+func Warnln(args ...interface{}) {
+	logrus.Warnln(args...)
+}
+
+func Warningln(args ...interface{}) {
+	logrus.Warningln(args...)
+}
+
+func Errorln(args ...interface{}) {
+	logrus.Errorln(args...)
+}
+
+func Fatalln(args ...interface{}) {
+	logrus.Fatalln(args...)
+}
+
+func Panicln(args ...interface{}) {
+	logrus.Panicln(args...)
 }
