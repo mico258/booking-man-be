@@ -1,10 +1,7 @@
 package server
 
 import (
-	"gitlab.com/ruangguru/source/shared-lib/go/morse/gateway"
-
 	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/prometheus/client_golang/prometheus"
 )
 
 const (
@@ -41,9 +38,7 @@ type Options struct {
 	// network is type of network protocol
 	// by default using tcp connection
 	network string
-	// disableRest is property to diable rest service
-	// in case we only need gRPC service
-	disableRest bool
+
 	// restServerMuxOpts is property to set option of rest service
 	restServeMuxOpts []gwruntime.ServeMuxOption
 
@@ -52,10 +47,4 @@ type Options struct {
 
 	// to enable request using form data
 	enableFormData bool
-	// prometheusCollectors are a list of prometheus collector
-	prometheusCollectors []prometheus.Collector
-	// enableLegacyError to enable backward compatible with previous api (GIN)
-	// added field 'code' & 'error_description' on API response
-	// note: you must add 'option (morse.api.response.data) = Array;' on your proto file to make the response data return array
-	errorResponseType gateway.ErrorResponseType
 }

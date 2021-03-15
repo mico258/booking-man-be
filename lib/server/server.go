@@ -47,6 +47,83 @@ type service struct {
 	restHandlers []restHandler
 }
 
+// OptionFunc function type of Option struct
+type OptionFunc func(o *Options)
+
+func generateOptions(fs ...OptionFunc) Options {
+	var marshalers []gwruntime.ServeMuxOption
+
+	opts := Options{
+		gRPCPort: DefaultGRPCPort,
+		restPort: DefaultRESTPort,
+		network:  DefaultNetwork,
+		gRPCHost: DefaultGRPHost,
+	}
+	for _, f := range fs {
+		f(&opts)
+	}
+
+	opts.restServeMuxOpts = append(marshalers, opts.restServeMuxOpts...)
+	return opts
+}
+
+// GRPCPort to set gRPC port option
+func GRPCPort(p string) OptionFunc {
+	return func(o *Options) {
+		o.gRPCPort = p
+	}
+}
+
+// RESTPort to set rest gateway port option
+func RESTPort(p string) OptionFunc {
+	return func(o *Options) {
+		o.restPort = p
+	}
+}
+
+func NewService(fs ...OptionFunc) Service {
+	opts := generateOptions(fs...)
+
+	return &service{
+		options: opts,
+	}
+}
+
+// UseServerUnaryInterceptor method to collect define interceptor
+func (s *service) UseServerUnaryInterceptor(interceptors ...grpc.UnaryServerInterceptor) {
+
+	s.interceptors.serverUnary = append(s.interceptors.serverUnary, interceptors...)
+
+}
+
+func (s *service) Init() {
+	s.initServer()
+}
+
+// RunServers starts the grpc and rest gateway server
+func (s *service) RunServers() <-chan error {
+	ch := make(chan error, 2)
+	go func() {
+		logger.Infof("Initializing gRPC connection in port %s", s.options.gRPCPort)
+		if err := s.ListenAndServeGRPC(); err != nil {
+			ch <- fmt.Errorf("cannot run grpc service: %v", err)
+		}
+	}()
+
+	go func() {
+		logger.Infof("Initializing rest gateway connection in port %s", s.options.restPort)
+		if err := s.ListenAndServeGateway(context.Background(), true); err != nil {
+			ch <- fmt.Errorf("cannot run gateway service: %v", err)
+		}
+	}()
+
+	return ch
+}
+
+func (s *service) RegisterRESTHandler(restHandler ...restHandler) {
+	s.restHandlers = append(s.restHandlers, restHandler...)
+}
+
 func (s *service) Shutdown(ctx context.Context) error {
 	<-ctx.Done()
 	return nil
@@ -179,7 +256,7 @@ func allowCORS(h http.Handler) http.Handler {
 }
 
 func preflightHandler(w http.ResponseWriter, r *http.Request) {
-	headers := []string{HeaderContentType, HeaderAccept, HeaderRole, HeaderInternalAPIPassword, HeaderAuthorization, HeaderUserCode, HeaderPlatform, HeaderAppVersion}
+	headers := []string{HeaderContentType, HeaderAccept, HeaderAuthorization}
 	w.Header().Set("Access-Control-Allow-Headers", strings.Join(headers, ","))
 	methods := []string{"GET", "HEAD", "POST", "PUT", "DELETE"}
 	w.Header().Set("Access-Control-Allow-Methods", strings.Join(methods, ","))

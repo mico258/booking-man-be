@@ -5,8 +5,10 @@ package user;
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
+option go_package = "proto/user";
+
 service user {
-     rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {
+     rpc RegisterUser (RegisterUserRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             post: "/booking_man/user/register",
             body: "*"
@@ -16,14 +18,8 @@ service user {
 
 }
 
-
-message RegisterUser {
-  string query = 1;
-  int32 pageNumber = 2;
-   
+message RegisterUserRequest {
+  string email = 1;
+  string username = 2;
+  string password = 3;
 }
-
-message RegisterUserResponse {
-  string query = 1;
-  int32 pageNumber = 2;
-} 
