@@ -41,6 +41,14 @@ type Logger interface {
 	SetOut(out io.Writer)
 }
 
+// InitializeLog setup configuration and return logrus object
+func init() {
+	textFormatter := &logrus.TextFormatter{}
+	logrus.SetFormatter(&PrefixTextFormatter{textFormatter, prefix})
+	logrus.SetOutput(os.Stdout)
+	logrus.SetLevel(GetLogLevel())
+}
+
 type logger struct {
 	base *logrus.Logger
 }
